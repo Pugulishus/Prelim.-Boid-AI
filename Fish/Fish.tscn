@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://rlb2sxnyy43d"]
+
+[ext_resource type="Script" path="res://World/Hunting/Fish/FishAI.gd" id="1_4d7li"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hhxey"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uxvfy"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_6s8xl"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3tt1x"]
+radius = 9.60521
+
+[node name="Fishies" type="Node3D"]
+
+[node name="Fish" type="CharacterBody3D" parent="."]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
+collision_layer = 2147483649
+collision_mask = 2147483649
+script = ExtResource("1_4d7li")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fish"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_hhxey")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Fish/CollisionShape3D"]
+mesh = SubResource("CapsuleMesh_uxvfy")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Fish/CollisionShape3D"]
+transform = Transform3D(-4.37114e-08, -4.37114e-08, -0.3, 4.37114e-08, 1, -1.31134e-08, 1, -4.37114e-08, -1.31134e-08, 0, -0.8, 3.49691e-08)
+mesh = SubResource("PrismMesh_6s8xl")
+
+[node name="RayBundle" type="Node3D" parent="Fish"]
+
+[node name="Forward" type="Node3D" parent="Fish/RayBundle"]
+
+[node name="Left" type="RayCast3D" parent="Fish/RayBundle/Forward"]
+target_position = Vector3(0.5, 0, 4)
+collision_mask = 2
+
+[node name="Right" type="RayCast3D" parent="Fish/RayBundle/Forward"]
+target_position = Vector3(-0.5, 0, 3.55)
+collision_mask = 2
+
+[node name="Down" type="RayCast3D" parent="Fish/RayBundle/Forward"]
+target_position = Vector3(0, -0.5, 4)
+collision_mask = 2
+
+[node name="Up" type="RayCast3D" parent="Fish/RayBundle/Forward"]
+target_position = Vector3(0, 0.5, 3.5)
+collision_mask = 2
+
+[node name="Mid" type="Node3D" parent="Fish/RayBundle"]
+
+[node name="Down" type="RayCast3D" parent="Fish/RayBundle/Mid"]
+target_position = Vector3(0, -1.5, 2)
+collision_mask = 2
+
+[node name="Up" type="RayCast3D" parent="Fish/RayBundle/Mid"]
+target_position = Vector3(0, 1.5, 2)
+collision_mask = 2
+
+[node name="Left" type="RayCast3D" parent="Fish/RayBundle/Mid"]
+target_position = Vector3(1.5, 0, 2)
+collision_mask = 2
+
+[node name="Right" type="RayCast3D" parent="Fish/RayBundle/Mid"]
+target_position = Vector3(-1.5, 0, 2)
+collision_mask = 2
+
+[node name="DetectArea" type="Area3D" parent="Fish/RayBundle"]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fish/RayBundle/DetectArea"]
+shape = SubResource("SphereShape3D_3tt1x")
+
+[node name="Location_Ray" type="RayCast3D" parent="Fish"]
+top_level = true
+target_position = Vector3(0, 100, 0)
